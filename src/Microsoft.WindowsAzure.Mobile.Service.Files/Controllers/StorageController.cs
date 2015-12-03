@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using Microsoft.Azure.Mobile.Server.Authentication;
 using Microsoft.WindowsAzure.Mobile.Service.Files;
 
 namespace Microsoft.WindowsAzure.MobileServices.Files.Controllers
@@ -36,8 +36,6 @@ namespace Microsoft.WindowsAzure.MobileServices.Files.Controllers
 
         public virtual async Task<StorageToken> GetStorageTokenAsync(string id, StorageTokenRequest value, IContainerNameResolver containerNameResolver)
         {
-            ServiceUser user = this.User as ServiceUser;
-                   
             StorageTokenScope scope = GetStorageScopeForRequest(id, value);
 
             StorageToken token = await this.storageProvider.GetAccessTokenAsync(value, scope, containerNameResolver);
@@ -52,8 +50,6 @@ namespace Microsoft.WindowsAzure.MobileServices.Files.Controllers
 
         public async Task<IEnumerable<MobileServiceFile>> GetRecordFilesAsync(string id, IContainerNameResolver containerNameResolver)
         {
-            ServiceUser user = this.User as ServiceUser;
-
             return await this.storageProvider.GetRecordFilesAsync(GetTableName(), id, containerNameResolver);
         }
 
@@ -75,12 +71,11 @@ namespace Microsoft.WindowsAzure.MobileServices.Files.Controllers
 
         public async Task DeleteFileAsync(string id, string name, IContainerNameResolver containerNameResolver)
         {
-            ServiceUser user = this.User as ServiceUser;
             // Validate user and request
             await this.storageProvider.DeleteFileAsync(GetTableName(), id, name, containerNameResolver);
         }
 
-        protected virtual bool IsTokenRequestValid(StorageTokenRequest request, ServiceUser user)
+        protected virtual bool IsTokenRequestValid(StorageTokenRequest request, ClaimsPrincipal user)
         {
             return true;
         }
