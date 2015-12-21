@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.WindowsAzure.MobileServices.Files;
-using Microsoft.WindowsAzure.Mobile.Service.Files;
+﻿// ---------------------------------------------------------------------------- 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// ---------------------------------------------------------------------------- 
 
-namespace Microsoft.WindowsAzure.MobileServices.Files
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Microsoft.Azure.Mobile.Server.Files
 {
     public abstract class StorageProvider
     {

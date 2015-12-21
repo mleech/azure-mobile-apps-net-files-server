@@ -1,22 +1,47 @@
-﻿using System;
+﻿// ---------------------------------------------------------------------------- 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// ---------------------------------------------------------------------------- 
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using Microsoft.WindowsAzure.Mobile.Service.Files;
+using Microsoft.Azure.Mobile.Server.Files;
+using Microsoft.Azure.Mobile.Server.Files.Properties;
 
-namespace Microsoft.WindowsAzure.MobileServices.Files.Controllers
+namespace Microsoft.Azure.Mobile.Server.Files.Controllers
 {
     public abstract class StorageController<T> : ApiController
     {
         private StorageProvider storageProvider;
 
         public StorageController()
+            : this(Constants.StorageConnectionStringName)
+        { }
+
+        public StorageController(string connectionStringName)
         {
-            // TODO: This constructor should be removed. We should rely on constructor injection for the provider.
-            this.storageProvider = new AzureStorageProvider(ConfigurationManager.ConnectionStrings["mS_AzureStorageAccountConnectionString"].ConnectionString);
+            if (connectionStringName == null)
+            {
+                throw new ArgumentNullException("connectionStringName");
+            }
+
+            if (connectionStringName.Length == 0)
+            {
+                throw new ArgumentException(Resources.ConnectionStringNameMayNotBeEmpty);
+            }
+
+            var connectionStringSettings = ConfigurationManager.ConnectionStrings[connectionStringName];
+
+            if (connectionStringSettings == null)
+            {
+                throw new ConfigurationErrorsException(string.Format(Resources.MissingConnectionString, connectionStringName));
+            }
+
+            this.storageProvider = new AzureStorageProvider(connectionStringSettings.ConnectionString);
         }
 
         public StorageController(StorageProvider storageProvider)

@@ -1,14 +1,15 @@
-﻿using System;
+﻿// ---------------------------------------------------------------------------- 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// ---------------------------------------------------------------------------- 
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.MobileServices.Files;
-using Microsoft.WindowsAzure.Mobile.Service.Files;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace Microsoft.WindowsAzure.MobileServices.Files
+namespace Microsoft.Azure.Mobile.Server.Files
 {
     public class AzureStorageProvider : StorageProvider
     {

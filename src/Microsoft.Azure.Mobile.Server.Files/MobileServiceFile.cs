@@ -1,22 +1,17 @@
-﻿using System;
+﻿// ---------------------------------------------------------------------------- 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// ---------------------------------------------------------------------------- 
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Azure.Mobile.Server.Files.Properties;
 using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 
-namespace Microsoft.WindowsAzure.Mobile.Service.Files
+namespace Microsoft.Azure.Mobile.Server.Files
 {
     public class MobileServiceFile
     {
-        private readonly static Lazy<MobileServiceFile> _emptyFile;
-
-        static MobileServiceFile()
-        {
-            _emptyFile = new Lazy<MobileServiceFile>(() => new NullMobileServiceFile());
-        }
-
         public virtual string Id { get; set; }
 
         public virtual string Name { get; set; }
@@ -69,32 +64,22 @@ namespace Microsoft.WindowsAzure.Mobile.Service.Files
                     JsonConvert.PopulateObject(value, this,
                         new JsonSerializerSettings
                         {
-                            Error = (a, s) => s.ErrorContext.Handled = true // WTH!
+                            Error = (a, s) => s.ErrorContext.Handled = true
                         });
                 }
                 catch { }
             }
         }
 
-        //public MobileServiceFile Empty
-        //{
-        //    get
-        //    {
-        //        return _emptyFile.Value;
-        //    }
-        //}
-
         private class NullMobileServiceFile : MobileServiceFile
         {
-            private const string CannotModifyInstanceExceptionMessage = "Cannot modify this MobileServiceFile instance";
-
             public override string TableName
             {
                 get
                 {
                     return null;
                 }
-                set { throw new InvalidOperationException(CannotModifyInstanceExceptionMessage); }
+                set { throw new InvalidOperationException(Resources.CannotModifyMobileFileInstance); }
             }
 
             public override string ContentMD5
@@ -103,7 +88,7 @@ namespace Microsoft.WindowsAzure.Mobile.Service.Files
                 {
                     return null;
                 }
-                set { throw new InvalidOperationException(CannotModifyInstanceExceptionMessage); }
+                set { throw new InvalidOperationException(Resources.CannotModifyMobileFileInstance); }
             }
 
             public override string FileInfoToken
@@ -112,7 +97,7 @@ namespace Microsoft.WindowsAzure.Mobile.Service.Files
                 {
                     return null;
                 }
-                set { throw new InvalidOperationException(CannotModifyInstanceExceptionMessage); }
+                set { throw new InvalidOperationException(Resources.CannotModifyMobileFileInstance); }
             }
 
             public override string Id
@@ -121,7 +106,7 @@ namespace Microsoft.WindowsAzure.Mobile.Service.Files
                 {
                     return null;
                 }
-                set { throw new InvalidOperationException(CannotModifyInstanceExceptionMessage); }
+                set { throw new InvalidOperationException(Resources.CannotModifyMobileFileInstance); }
             }
 
             public override long Length
@@ -130,7 +115,7 @@ namespace Microsoft.WindowsAzure.Mobile.Service.Files
                 {
                     return 0;
                 }
-                set { throw new InvalidOperationException(CannotModifyInstanceExceptionMessage); }
+                set { throw new InvalidOperationException(Resources.CannotModifyMobileFileInstance); }
             }
 
             public override IDictionary<string, string> Metadata
@@ -139,7 +124,7 @@ namespace Microsoft.WindowsAzure.Mobile.Service.Files
                 {
                     return null;
                 }
-                set { throw new InvalidOperationException(CannotModifyInstanceExceptionMessage); }
+                set { throw new InvalidOperationException(Resources.CannotModifyMobileFileInstance); }
             }
 
             public override string Name
@@ -148,7 +133,7 @@ namespace Microsoft.WindowsAzure.Mobile.Service.Files
                 {
                     return null;
                 }
-                set { throw new InvalidOperationException(CannotModifyInstanceExceptionMessage); }
+                set { throw new InvalidOperationException(Resources.CannotModifyMobileFileInstance); }
             }
         }
     }

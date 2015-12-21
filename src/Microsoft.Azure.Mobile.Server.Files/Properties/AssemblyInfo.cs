@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Microsoft.WindowsAzure.Mobile.Service.Files")]
+[assembly: AssemblyTitle("Microsoft.Azure.Mobile.Server.Files")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Microsoft.WindowsAzure.Mobile.Service.Files")]
+[assembly: AssemblyProduct("Microsoft.Azure.Mobile.Server.Files")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
