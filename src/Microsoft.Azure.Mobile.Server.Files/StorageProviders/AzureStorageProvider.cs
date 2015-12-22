@@ -11,12 +11,18 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Microsoft.Azure.Mobile.Server.Files
 {
+    /// <summary>
+    /// A storage provider that uses Azure Blob Storage as the file store.
+    /// </summary>
     public class AzureStorageProvider : StorageProvider
     {
         private readonly static Dictionary<StoragePermissions, SharedAccessBlobPermissions> storagePermissionsMapping;
 
         private string connectionString;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AzureStorageProvider"/> class.
+        /// </summary>
         static AzureStorageProvider()
         {
             storagePermissionsMapping = new Dictionary<StoragePermissions, SharedAccessBlobPermissions>
@@ -27,6 +33,11 @@ namespace Microsoft.Azure.Mobile.Server.Files
             };
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AzureStorageProvider"/> class, using the provided
+        /// <paramref name="connectionString"/> to connect to Azure Storage.
+        /// </summary>
+        /// <param name="connectionString"></param>
         public AzureStorageProvider(string connectionString)
         {
             if (connectionString == null)
@@ -37,11 +48,13 @@ namespace Microsoft.Azure.Mobile.Server.Files
             this.connectionString = connectionString;
         }
 
+        /// <inheritdoc />
         public override string Name
         {
             get { return "Microsoft Azure Blob Storage"; }
         }
 
+        /// <inheritdoc />
         public async override Task<IEnumerable<MobileServiceFile>> GetRecordFilesAsync(string tableName, string recordId, IContainerNameResolver containerNameResolver)
         {
             if (tableName == null)
@@ -68,6 +81,7 @@ namespace Microsoft.Azure.Mobile.Server.Files
             return files;
         }
 
+        /// <inheritdoc />
         public async override Task DeleteFileAsync(string tableName, string recordId, string fileName, IContainerNameResolver containerNameResolver)
         {
             if (tableName == null)
@@ -93,7 +107,7 @@ namespace Microsoft.Azure.Mobile.Server.Files
             await blob.DeleteIfExistsAsync();
         }
 
-
+        /// <inheritdoc />
         public async override Task<StorageToken> GetAccessTokenAsync(StorageTokenRequest request, StorageTokenScope scope, IContainerNameResolver containerNameResolver)
         {
             string containerName = await containerNameResolver.GetFileContainerNameAsync(request.TargetFile.TableName, request.TargetFile.ParentId, request.TargetFile.Name);
@@ -128,6 +142,11 @@ namespace Microsoft.Azure.Mobile.Server.Files
             return storageToken;
         }
 
+        /// <summary>
+        /// Gets the list of <see cref="CloudBlockBlob"/> items from a given container.
+        /// </summary>
+        /// <param name="containerName">The container from which the list should be retrieved.</param>
+        /// <returns>A <see cref="Task{IEnumerable{CloudBlockBlob}}"/> that completes when the list of items is retrieved.</returns>
         protected virtual async Task<IEnumerable<CloudBlockBlob>> GetContainerFilesAsync(string containerName)
         {
             CloudBlobContainer container = GetContainer(containerName);
@@ -136,6 +155,11 @@ namespace Microsoft.Azure.Mobile.Server.Files
             return blobs.OfType<CloudBlockBlob>();
         }
 
+        /// <summary>
+        /// Gets a reference to a blob container with the specified name.
+        /// </summary>
+        /// <param name="containerName">A string containing the name of the container.</param>
+        /// <returns>A <see cref="CloudBlockBlob"/> reference to the container specified by <paramref name="containerName"/>.</returns>
         protected CloudBlobContainer GetContainer(string containerName)
         {
             CloudStorageAccount account = CloudStorageAccount.Parse(this.connectionString);
