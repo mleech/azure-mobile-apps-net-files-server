@@ -133,12 +133,8 @@ namespace Microsoft.Azure.Mobile.Server.Files
                 sas = await Task.Run(() => container.GetSharedAccessSignature(constraints));
             }
 
-            var storageToken = new StorageToken();
-            storageToken.Permissions = request.Permissions;
-            storageToken.ResourceUri = resourceUri;
-            storageToken.RawToken = sas;
-            storageToken.EntityId = request.TargetFile.ParentId;
-
+            var storageToken = new StorageToken(resourceUri, request.TargetFile.ParentId, request.Permissions, scope, sas);
+            
             return storageToken;
         }
 
