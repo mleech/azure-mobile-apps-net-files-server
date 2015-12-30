@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Azure.Mobile.Server.Files
 {
+    /// <summary>
+    /// Provides a common <see cref="ApiController"/> abstraction for storage providers.
+    /// </summary>
     public abstract class StorageProvider
     {
         /// <summary>
