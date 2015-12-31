@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Mobile.Server.Files
         /// </summary>
         /// <param name="tableName">The name of the table (entity type).</param>
         /// <param name="recordId">The ID of the entity.</param>
-        /// <returns>A <see cref="Task{IEnumerable{string}}"/> that completes when the list of container names is retrieved.</returns>
+        /// <returns>A <see cref="Task{IEnumerable}"/> that completes when the list of container names is retrieved.</returns>
         Task<IEnumerable<string>> GetRecordContainerNames(string tableName, string recordId);
     }
 }

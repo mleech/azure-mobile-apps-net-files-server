@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Mobile.Server.Files
         /// Gets the list of <see cref="CloudBlockBlob"/> items from a given container.
         /// </summary>
         /// <param name="containerName">The container from which the list should be retrieved.</param>
-        /// <returns>A <see cref="Task{IEnumerable{CloudBlockBlob}}"/> that completes when the list of items is retrieved.</returns>
+        /// <returns>A <see cref="Task{IEnumerable}"/> that completes when the list of items is retrieved.</returns>
         protected virtual async Task<IEnumerable<CloudBlockBlob>> GetContainerFilesAsync(string containerName)
         {
             CloudBlobContainer container = GetContainer(containerName);
