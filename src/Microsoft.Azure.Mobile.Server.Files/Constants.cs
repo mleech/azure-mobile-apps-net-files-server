@@ -6,6 +6,9 @@ using System;
 
 namespace Microsoft.Azure.Mobile.Server.Files
 {
+    /// <summary>
+    /// Exposes constants used by the Files SDK.
+    /// </summary>
     public static class Constants
     {
         /// <summary>

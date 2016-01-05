@@ -20,9 +20,6 @@ namespace Microsoft.Azure.Mobile.Server.Files
 
         private string connectionString;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AzureStorageProvider"/> class.
-        /// </summary>
         static AzureStorageProvider()
         {
             storagePermissionsMapping = new Dictionary<StoragePermissions, SharedAccessBlobPermissions>
@@ -42,7 +39,7 @@ namespace Microsoft.Azure.Mobile.Server.Files
         {
             if (connectionString == null)
             {
-                throw new ArgumentNullException("connectionString");
+                throw new ArgumentNullException(nameof(connectionString));
             }
 
             this.connectionString = connectionString;
@@ -59,12 +56,17 @@ namespace Microsoft.Azure.Mobile.Server.Files
         {
             if (tableName == null)
             {
-                throw new ArgumentException("tableName");
+                throw new ArgumentException(nameof(tableName));
             }
 
             if (recordId == null)
             {
-                throw new ArgumentException("recordId");
+                throw new ArgumentException(nameof(recordId));
+            }
+
+            if (containerNameResolver == null)
+            {
+                throw new ArgumentNullException(nameof(containerNameResolver));
             }
 
             IEnumerable<string> containerNames = await containerNameResolver.GetRecordContainerNames(tableName, recordId);
@@ -86,17 +88,22 @@ namespace Microsoft.Azure.Mobile.Server.Files
         {
             if (tableName == null)
             {
-                throw new ArgumentException("tableName");
+                throw new ArgumentException(nameof(tableName));
             }
 
             if (recordId == null)
             {
-                throw new ArgumentException("recordId");
+                throw new ArgumentException(nameof(recordId));
             }
 
             if (fileName == null)
             {
-                throw new ArgumentException("fileName");
+                throw new ArgumentException(nameof(fileName));
+            }
+
+            if (containerNameResolver == null)
+            {
+                throw new ArgumentNullException(nameof(containerNameResolver));
             }
 
             string containerName = await containerNameResolver.GetFileContainerNameAsync(tableName, recordId, fileName);
@@ -110,6 +117,16 @@ namespace Microsoft.Azure.Mobile.Server.Files
         /// <inheritdoc />
         public async override Task<StorageToken> GetAccessTokenAsync(StorageTokenRequest request, StorageTokenScope scope, IContainerNameResolver containerNameResolver)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (containerNameResolver == null)
+            {
+                throw new ArgumentNullException(nameof(containerNameResolver));
+            }
+
             string containerName = await containerNameResolver.GetFileContainerNameAsync(request.TargetFile.TableName, request.TargetFile.ParentId, request.TargetFile.Name);
 
             CloudBlobContainer container = GetContainer(containerName);
@@ -125,12 +142,12 @@ namespace Microsoft.Azure.Mobile.Server.Files
                 CloudBlockBlob blob = container.GetBlockBlobReference(request.TargetFile.Name);
 
                 resourceUri = blob.Uri;
-                sas = await Task.Run(() => blob.GetSharedAccessSignature(constraints));
+                sas = blob.GetSharedAccessSignature(constraints);
             }
             else if (scope == StorageTokenScope.Record)
             {
                 resourceUri = container.Uri;
-                sas = await Task.Run(() => container.GetSharedAccessSignature(constraints));
+                sas = container.GetSharedAccessSignature(constraints);
             }
 
             var storageToken = new StorageToken(resourceUri, request.TargetFile.ParentId, request.Permissions, scope, sas);
@@ -142,7 +159,7 @@ namespace Microsoft.Azure.Mobile.Server.Files
         /// Gets the list of <see cref="CloudBlockBlob"/> items from a given container.
         /// </summary>
         /// <param name="containerName">The container from which the list should be retrieved.</param>
-        /// <returns>A <see cref="Task{IEnumerable{CloudBlockBlob}}"/> that completes when the list of items is retrieved.</returns>
+        /// <returns>A <see cref="Task{IEnumerable}"/> that completes when the list of items is retrieved.</returns>
         protected virtual async Task<IEnumerable<CloudBlockBlob>> GetContainerFilesAsync(string containerName)
         {
             CloudBlobContainer container = GetContainer(containerName);

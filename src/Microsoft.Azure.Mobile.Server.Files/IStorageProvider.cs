@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Microsoft.Azure.Mobile.Server.Files
 {
     /// <summary>
-    /// Provides a common <see cref="ApiController"/> abstraction for storage providers.
+    /// Provides a common abstraction for storage providers.
     /// </summary>
     public abstract class StorageProvider
     {
@@ -24,7 +24,7 @@ namespace Microsoft.Azure.Mobile.Server.Files
         /// <param name="tableName">The table (entity) name.</param>
         /// <param name="recordId">The entity id.</param>
         /// <param name="containerNameResolver">The instance of an <see cref="IContainerNameResolver"/> used to resolve the storage container name.</param>
-        /// <returns>A <see cref="Task{IEnumerable{MobileServiceFile}}"/> that completes when the list of files is retrieved.</returns>
+        /// <returns>A <see cref="Task{TResult}"/> that completes when the list of files is retrieved.</returns>
         abstract public Task<IEnumerable<MobileServiceFile>> GetRecordFilesAsync(string tableName, string recordId, IContainerNameResolver containerNameResolver);
 
         /// <summary>
