@@ -23,7 +23,7 @@ namespace Microsoft.Azure.Mobile.Server.Files.Test.EndToEnd
                 .ApplyTo(config);
 
             // Use Entity Framework Code First to create database tables based on your DbContext
-            Database.SetInitializer(new MobileServiceInitializer());
+            Database.SetInitializer(new CreateDatabaseIfNotExists<MobileServiceContext>());
 
             MobileAppSettingsDictionary settings = config.GetMobileAppSettingsProvider().GetMobileAppSettings();
 
@@ -44,7 +44,5 @@ namespace Microsoft.Azure.Mobile.Server.Files.Test.EndToEnd
             app.UseWebApi(config);
         }
     }
-
-    public class MobileServiceInitializer : CreateDatabaseIfNotExists<MobileServiceContext> { }
 }
 
