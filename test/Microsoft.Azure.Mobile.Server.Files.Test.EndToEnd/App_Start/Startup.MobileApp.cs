@@ -17,6 +17,7 @@ namespace Microsoft.Azure.Mobile.Server.Files.Test.EndToEnd
         public static void ConfigureMobileApp(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
 
             new MobileAppConfiguration()
                 .UseDefaultConfiguration()
